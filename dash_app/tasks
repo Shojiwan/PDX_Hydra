@@ -1,0 +1,20 @@
+https://or.water.usgs.gov/non-usgs/bes/
+
+1. List of gages:
+	*	URL for each gage data page
+	*	Addresses for each gage
+	*	Extract/convert addresses to coordinates
+
+2. Read station data
+	*	Historical data and database creation
+	*	Update by hour
+	*	Data processing
+
+3. Analysis
+	*	Infrastructure
+	*	Initial features
+	
+4. Adam's Station
+	* Website options
+	* Direct connection
+	* Downloads and 
