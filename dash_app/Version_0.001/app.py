@@ -15,43 +15,20 @@ import pandas as pd
 import re
 from io import StringIO
 
-
-
-
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-
 def read_data(gaugeLink):
-
-  # Function to read data from HYDRA station for start date to end date
-
-  # Look up URL from station ID
-  
-
-  # Read the urls  
   link = "https://or.water.usgs.gov/non-usgs/bes/{}.rain".format(gaugeLink)
-
   f = urllib.request.urlopen(link)
-
   pDat = str(f.read())
-
-  # Split header text, header line and data
   pDat = re.split("Daily  Hourly data -->\\\\n   |-{114}\\\\n", pDat)
-  
-  # For the header line, insert an "H" in front of the number
   pDat = re.sub('\s+', ' H', pDat[1]) + pDat[2]
-
-  # Fix the carriage returns
   pDat = re.sub('\\\\n', '\\n', pDat)
-
   pDat = StringIO(pDat)
-
   pDat = pd.read_csv(pDat, sep = "\s+")
-
-  # pDat.to_csv('C:/Users/ryans/Desktop/RMS/002_projects/pdx_hydra/dash_app/data/test.csv',index = False)
-  
+  pDat = pDat.loc[pDat['Date'] != '\'', :]  
   return(pDat)
 
 df_gaugeInfo = pd.DataFrame({
@@ -87,15 +64,10 @@ app.layout = html.Div([
         ])
     ])
 
-
 @app.callback(
     Output('dataTable', 'children'),
     Input('gaugeName', 'value'),
-    #Input('resolution', 'value')
-    )
-
-
-
+)
 
 def generate_table(gaugeName):
     gaugeLink = df_gaugeInfo.loc[df_gaugeInfo['Name'] == gaugeName, 'Link'].iloc[0]
@@ -111,7 +83,6 @@ def generate_table(gaugeName):
         ])
     ])
     return dataTable
-
 
 '''
 def update_graph(xaxis_column_name, yaxis_column_name,
